@@ -1,13 +1,21 @@
 import java.io.File;
+import java.util.concurrent.ForkJoinPool;
 
 public class Main {
     public static void main(String[] args) {
-        File file = new File("data/Метро Москвы.html");
-        System.out.println(getFolderSize(file));
+
+        String folderPath = "data/Метро Москвы.html";
+        File file = new File(folderPath);
+
+        // подсчет объема папки через ForkJoinPool
+        FolderSizeCalculator folderSizeCalculator = new FolderSizeCalculator(file);
+        ForkJoinPool pool = new ForkJoinPool();
+        long size = pool.invoke(folderSizeCalculator);
+        System.out.println(size);
 
     }
 
-    public static long getFolderSize(File folder)
+    public static long getFolderSize(File folder) // подсчет объема папки обычным методом в 1 поток
     {
         if(folder.isFile()){
             return folder.length();
