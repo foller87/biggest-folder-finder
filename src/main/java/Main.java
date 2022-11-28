@@ -2,20 +2,23 @@ import java.io.File;
 import java.util.concurrent.ForkJoinPool;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
 
         String folderPath = "data/Метро Москвы.html";
         File file = new File(folderPath);
+        Node root = new Node(file);
 
-        // подсчет объема папки через ForkJoinPool
-        FolderSizeCalculator folderSizeCalculator = new FolderSizeCalculator(file);
+        //TODO: подсчет объема папки через ForkJoinPool
+        FolderSizeCalculator folderSizeCalculator = new FolderSizeCalculator(root);
         ForkJoinPool pool = new ForkJoinPool();
-        long size = pool.invoke(folderSizeCalculator);
-        System.out.println(size);
+        pool.invoke(folderSizeCalculator);
+        System.out.println(root.getSize());
 
     }
 
-    public static long getFolderSize(File folder) // подсчет объема папки обычным методом в 1 поток
+    // TODO: подсчет объема папки обычным методом в 1 поток
+    public static long getFolderSize(File folder)
     {
         if(folder.isFile()){
             return folder.length();
